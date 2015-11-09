@@ -1,0 +1,57 @@
+//Color Scheme
+$darkBrown: #361c12;
+$brown: #4f3b3b;
+$darkRed: #9d321b;
+$red: #e56655;
+$darkYellow: #cd9c50;
+$yellow: #f4d37a;
+$cream: #f0e9dd;
+
+//color text
+$textOne: #4f3b3b;
+$textTwo: #fff;
+
+@mixin transition($val){
+	-webkit-transition: $val;
+	-moz-transition: $val;
+	-o-transition: $val;
+	transition: $val;
+}
+
+@mixin boxShadow($val){
+	-moz-box-shadow: $val;
+	-webkit-box-shadow: $val;
+	box-shadow: $val;
+}
+
+@mixin borderRadius($val) {
+	-moz-border-radius: $val;
+	-webkit-border-radius: $val;
+	border-radius: $val;
+}
+@mixin boxSizing{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'liga';
+    src: url('../font/websymbolsligaregular-webfont-webfont.eot');
+    src: url('../font/websymbolsligaregular-webfont-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/websymbolsligaregular-webfont-webfont.woff') format('woff'),
+         url('../font/websymbolsligaregular-webfont-webfont.ttf') format('truetype'),
+         url('../font/websymbolsligaregular-webfont-webfont.svg#web_symbols_ligaregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body{
+	margin: 35px;
+	padding: 0;
+	-webkit-font-smoothing: antialiased;
+	font-family: "Helvetica", arial;
+	font-weight: normal;
+	font-size: 16px;
+	color: #666;
+}
