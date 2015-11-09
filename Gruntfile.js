@@ -11,7 +11,8 @@ module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
-
+  //serve static, used in grunt connect
+  var serveStatic = require('serve-static');
   // Automatically load required Grunt tasks
   require('jit-grunt')(grunt, {
     useminPrepare: 'grunt-usemin',
@@ -27,7 +28,7 @@ module.exports = function (grunt) {
     temp:'.generated',
     development: 'builds/development'
   };
-
+  grunt.log.write('APPLICATION PATH: ' + appConfig.app);
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -93,14 +94,14 @@ module.exports = function (grunt) {
           open: true,
           middleware: function (connect) {
             return [
-              connect.static('.tmp'),
-              connect.static('test'),
+              serveStatic('.tmp'),
+              serveStatic('test'),
 
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+               serveStatic('./bower_components')
               ),
-              connect.static(appConfig.development)
+             serveStatic(appConfig.development)
             ];
           }
         }
@@ -111,13 +112,13 @@ module.exports = function (grunt) {
           port: 9001,
           middleware: function (connect) {
             return [
-              connect.static('.tmp'),
-              connect.static('test'),
+             serveStatic('.tmp'),
+             serveStatic('test'),
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+               serveStatic('./bower_components')
               ),
-              connect.static(appConfig.development)
+             serveStatic(appConfig.development)
             ];
           }
         }
@@ -132,22 +133,21 @@ module.exports = function (grunt) {
 
     // Make sure code styles are up to par and there are no obvious mistakes
     jshint: {
-      options: {
-        jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
-      },
+              options: {
+                jshintrc: '.jshintrc',
+                reporter: String( require('jshint-stylish')),
+                ignores: ['<%= yeoman.app %>/**/*_test.js'],
+              },
+
       all: {
-        src: [
-          'Gruntfile.js',
-          '<%= yeoman.app %>/components/**/*.js',
-          '!<%= yeoman.app %>/components/**/*_test.js'
-        ]
+
+         src:  ['Gruntfile.js','<%= yeoman.app %>/**/*.js']
       },
       test: {
         options: {
           jshintrc: '.jshintrc'
         },
-        src: ['components/**/*_test.js']
+        src: ['<%= yeoman.app %>/**/*_test.js']
       }
     },
 
