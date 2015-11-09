@@ -429,16 +429,35 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.development%>'
         },
       development: {
-           expand: true,
+          files: [{
+          expand: true,
           dot: true,
           dest: '<%= yeoman.development %>',
           src: [
-            '<%=yeoman.app%>/*.{ico,png,txt}',
-            '<%=yeoman.app%>/.htaccess',
-           // '<%=yeoman.app%>/components/*.html',  //this might need to be components folder
             'assets/images/{,*/}*.{webp,jpg,png,jpeg,gif,svg}',
             'assets/fonts/{,*/}*.*'
           ]
+        },{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.development %>',
+          src: [
+            '*.{ico,png,txt}',
+            '.htaccess',
+            '*.html'
+          ]
+        }, {
+          expand: true,
+          cwd: '.generated/images',
+          dest: '<%= yeoman.development %>/images',
+          src: ['generated/*']
+        }, {
+          expand: true,
+          cwd: '.',
+          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
+          dest: '<%= yeoman.development %>'
+        }]
       },
       dist: {
         files: [{
@@ -464,12 +483,12 @@ module.exports = function (grunt) {
           cwd: '.generated/images',
           dest: '<%= yeoman.dist %>/images',
           src: ['generated/*']
-        }/*, {
+        }, {
           expand: true,
           cwd: '.',
           src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
           dest: '<%= yeoman.dist %>'
-        }*/]
+        }]
       },
       sassStyles: {
         expand: true,
@@ -536,10 +555,16 @@ module.exports = function (grunt) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve:' + target]);
   });
+  grunt.registerTask('dev','Development Environment Task', function(){
+    //change dist folder to development
+
+    appConfig.dist = appConfig.development;
+     grunt.log.write('APPLICATION PATH: ' + appConfig.dist);
+    grunt.task.run(['debugDev']);
+  });
 
   grunt.registerTask('test', [
     'clean:server',
-/*    'clean:development',*/
     'wiredep',
   /*  'copy:html',
     'copy:development',*/
@@ -550,6 +575,32 @@ module.exports = function (grunt) {
     'karma:continuous',
     'watch'
   ]);
+  //build development
+   grunt.registerTask('debugDev', [
+    'karma:unit',
+    'clean:dist',
+    'clean:server',
+    'wiredep',
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'ngtemplates',
+    'concat',
+    'ngAnnotate',
+    'copy:dist',
+    /*'cssmin',
+    'uglify',
+    'filerev',*/
+    'usemin',
+    'htmlmin',
+    'wiredep',
+    'concurrent:server',
+    'autoprefixer:server',
+    'connect:livereload',
+      'karma:continuous',
+    'watch'
+  ]);
+
   //building production
   grunt.registerTask('build', [
     'clean:dist',
@@ -560,6 +611,7 @@ module.exports = function (grunt) {
     'ngtemplates',
     'concat',
     'ngAnnotate',
+    'copy:development',
     'copy:dist',
     'cdnify',
     'cssmin',
