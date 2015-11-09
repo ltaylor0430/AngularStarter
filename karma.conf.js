@@ -24,8 +24,9 @@ module.exports = function(config) {
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/angular-mocks/angular-mocks.js',
       //endbower
-      'components/app.js',
-      'components/**/*.js'
+      'app/app.js',
+      'app/components/**/*.js',
+      'app/shared_components/**/*.js'
     ],
 
 
