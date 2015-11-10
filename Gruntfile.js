@@ -222,7 +222,7 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
+        /*ignorePath:  /\.\.\//*/
       },
       test: {
         devDependencies: true,
@@ -294,6 +294,7 @@ module.exports = function (grunt) {
       html: '<%= yeoman.app %>/index.html',
       options: {
         dest: '<%= yeoman.dist %>',
+        staging:'.generated',
         flow: {
           html: {
             steps: {
@@ -524,11 +525,11 @@ module.exports = function (grunt) {
     karma: {
       unit: {
         configFile: 'karma.conf.js',
-        singleRun: false
+        singleRun: true
       },
       continuous: {
         configFile: 'karma.conf.js',
-        singleRun: true,
+        singleRun: false,
         background:true,
         browsers: ['PhantomJS']
   },
@@ -577,7 +578,7 @@ module.exports = function (grunt) {
   ]);
   //build development
    grunt.registerTask('debugDev', [
-    'karma:unit',
+    'jshint:all',
     'clean:dist',
     'clean:server',
     'wiredep',
@@ -588,12 +589,11 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
-    /*'cssmin',
+    'cssmin',
     'uglify',
-    'filerev',*/
+    'filerev',
     'usemin',
     'htmlmin',
-    'wiredep',
     'concurrent:server',
     'autoprefixer:server',
     'connect:livereload',
