@@ -101,7 +101,7 @@ module.exports = function (grunt) {
                 '/bower_components',
                serveStatic('./bower_components')
               ),
-             serveStatic(appConfig.development)
+             serveStatic(appConfig.dist)
             ];
           }
         }
@@ -119,7 +119,7 @@ module.exports = function (grunt) {
                 '/bower_components',
                serveStatic('./bower_components')
               ),
-             serveStatic(appConfig.development)
+             serveStatic(appConfig.dist)
             ];
           }
         }
@@ -181,7 +181,7 @@ module.exports = function (grunt) {
       //concat js into app.js
         js: {
           src: ['<%=yeoman.app%>/shared_components/**/*.js', '<%=yeoman.app%>/app.js','<%=yeoman.app%>/components/**/*.js','!<%=yeoman.app%>/components/**/*_test.js','!<%=yeoman.app%>/shared_components/**/*_test.js'],
-          dest: '<%= yeoman.development %>/scripts/app.js'
+          dest: '<%= yeoman.dist %>/scripts/app.js'
         },
         //concat css into app.css, only for production.
         css:{
@@ -205,7 +205,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '.generated/styles/',
           src: '{,*/}*.css',
-          dest: '<%=yeoman.development %>/styles'
+          dest: '<%=yeoman.dist %>/styles'
         }]
       },
       dist: {
@@ -427,7 +427,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%=yeoman.app%>',
           src: ['index.html', '**/*.html'],
-          dest: '<%= yeoman.development%>'
+          dest: '<%= yeoman.dist%>'
         },
       development: {
           files: [{
@@ -494,13 +494,13 @@ module.exports = function (grunt) {
       sassStyles: {
         expand: true,
         cwd: '.generated/styles',
-        dest: '.<%= yeoman.development%>/styles/',
+        dest: '.<%= yeoman.dist%>/styles/',
         src: '{,*/}*.css'
       },
       styles: {
         expand: true,
         cwd: 'assets/css',
-        dest: '.<%= yeoman.development%>/styles/',
+        dest: '.<%= yeoman.dist%>/styles/',
         src: '{,*/}*.css'
       }
     },
