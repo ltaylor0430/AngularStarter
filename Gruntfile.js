@@ -182,13 +182,7 @@ module.exports = function (grunt) {
         js: {
           src: ['<%=yeoman.app%>/shared_components/**/*.js', '<%=yeoman.app%>/app.js','<%=yeoman.app%>/components/**/*.js','!<%=yeoman.app%>/components/**/*_test.js','!<%=yeoman.app%>/shared_components/**/*_test.js'],
           dest: '<%= yeoman.dist %>/scripts/app.js'
-        },
-        //concat css into app.css, only for production.
-        css:{
-          src: ['.generated/**/*.css' ],
-          dest: '<%= yeoman.dist %>/styles/app.css'
         }
-
     },
 
 
@@ -205,7 +199,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '.generated/styles/',
           src: '{,*/}*.css',
-          dest: '<%=yeoman.dist %>/styles'
+          dest: '.generated/styles/'
         }]
       },
       dist: {
@@ -213,7 +207,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '.generated/styles/',
           src: '{,*/}*.css',
-          dest: '<%=yeoman.dist %>'
+          dest: '.generated/styles/'
         }]
       }
     },
@@ -299,7 +293,7 @@ module.exports = function (grunt) {
           html: {
             steps: {
               js: ['concat', 'uglifyjs'],
-              css: ['cssmin']
+              css: ['concat','cssmin']
             },
             post: {}
           }
@@ -584,7 +578,7 @@ module.exports = function (grunt) {
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
-    'autoprefixer',
+    'autoprefixer:server',
     'ngtemplates',
     'concat',
     'ngAnnotate',
@@ -595,9 +589,8 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin',
     'concurrent:server',
-    'autoprefixer:server',
     'connect:livereload',
-      'karma:continuous',
+    'karma:continuous',
     'watch'
   ]);
 

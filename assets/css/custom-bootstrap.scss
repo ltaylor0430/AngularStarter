@@ -1,0 +1,13 @@
+@import 'Import';
+
+//bootstrap custom settings
+//bootstrap
+$body-bg: $carolinablue;
+$brand-primary: $grayblue;
+$navbar-default-bg: $darkBlue;
+
+//bootstrap fonts path
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
