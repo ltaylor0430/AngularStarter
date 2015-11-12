@@ -6,7 +6,7 @@
 // 'test/spec/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
-
+ var devPath;
 module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
@@ -20,37 +20,54 @@ module.exports = function (grunt) {
     cdnify: 'grunt-google-cdn'
   });
 
+ if (grunt.option('dev') !== undefined)
+ {
+  devPath = 'builds/development';
+ }
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
     moduleName : 'angularAppName',
-    dist: 'builds/production',
+    dist: devPath || 'builds/production',
     temp:'.generated',
     development: 'builds/development'
   };
-  grunt.log.write('APPLICATION PATH: ' + appConfig.app);
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
     // Project settings
     yeoman: appConfig,
 
+    includeSource: {
+      options: {
+        basePath: 'app',
+        baseUrl: '/',
+      },
+      server: {
+        files: {
+          '.generated/index.html': '<%= yeoman.app %>/index.html'
+        }
+      },
+      dist: {
+        files: {
+          '<%= yeoman.dist %>/index.html': '<%= yeoman.app %>/index.html'
+        }
+      }
+    },
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
-      html: {
-          files: ['<%= yeoman.app %>/**/*.html'],
-           tasks: ['newer:copy:html'],
-            options: {
-             livereload: '<%= connect.options.livereload %>'
-            }
-      },
+       includeSource: {
+       files: ['<%= yeoman.app %>/index.html'],
+       tasks: ['includeSource:server']
+     },
       js: {
         files: ['<%= yeoman.app %>/**/*.js','!<%= yeoman.app %>/components/**/*_test.js'],
-        tasks: ['newer:jshint:all','concat:js'],
+        tasks: ['newer:jshint:all','newer:copy:html','usemin:js'],
         options: {
           livereload: '<%= connect.options.livereload %>'
         }
@@ -95,13 +112,19 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               require('connect-livereload')(),
-              serveStatic('.generated'),
+
+              serveStatic('.generated',{
+                dotFiles: 'allowed'}),
               serveStatic('test'),
               connect().use(
                 '/bower_components',
                serveStatic('./bower_components')
               ),
-             serveStatic(appConfig.dist)
+              connect().use(
+                '/app/styles',
+              serveStatic('.generated/styles')
+              ),
+             serveStatic(appConfig.app)
             ];
           }
         }
@@ -181,10 +204,9 @@ module.exports = function (grunt) {
       //concat js into app.js
         js: {
           src: ['<%=yeoman.app%>/shared_components/**/*.js', '<%=yeoman.app%>/app.js','<%=yeoman.app%>/components/**/*.js','!<%=yeoman.app%>/components/**/*_test.js','!<%=yeoman.app%>/shared_components/**/*_test.js'],
-          dest: '<%= yeoman.dist %>/scripts/app.js'
+          dest: '.generated/concat/scripts/app.js'
         }
     },
-
 
     // Add vendor prefixed styles
     autoprefixer: {
@@ -216,7 +238,7 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        /*ignorePath:  /\.\.\//*/
+        ignorePath:  /\.\.\//
       },
       test: {
         devDependencies: true,
@@ -273,8 +295,8 @@ module.exports = function (grunt) {
     filerev: {
       dist: {
         src: [
-          '<%= yeoman.dist %>/components/**/*.js',
-          '<%= yeoman.dist %>/assets/css/{,*/}*.css',
+          '<%= yeoman.dist %>/scripts/**/*.js',
+          '<%= yeoman.dist %>/styles/{,*/}*.css',
           '<%= yeoman.dist %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/assets/fonts/*'
         ]
@@ -285,14 +307,14 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
+      html: '<%= yeoman.dist %>/index.html',
       options: {
         dest: '<%= yeoman.dist %>',
         staging:'.generated',
         flow: {
           html: {
             steps: {
-              js: ['concat', 'uglifyjs'],
+              js: ['concat','uglifyjs'],
               css: ['concat','cssmin']
             },
             post: {}
@@ -423,37 +445,7 @@ module.exports = function (grunt) {
           src: ['index.html', '**/*.html'],
           dest: '<%= yeoman.dist%>'
         },
-      development: {
-          files: [{
-          expand: true,
-          dot: true,
-          dest: '<%= yeoman.development %>',
-          src: [
-            'assets/images/{,*/}*.{webp,jpg,png,jpeg,gif,svg}',
-            'assets/fonts/{,*/}*.*'
-          ]
-        },{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.development %>',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            '*.html'
-          ]
-        }, {
-          expand: true,
-          cwd: '.generated/images',
-          dest: '<%= yeoman.development %>/images',
-          src: ['generated/*']
-        }, {
-          expand: true,
-          cwd: '.',
-          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
-          dest: '<%= yeoman.development %>'
-        }]
-      },
+
       dist: {
         files: [{
           expand: true,
@@ -539,6 +531,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
+      'includeSource:dist',
       'concurrent:server',
       'autoprefixer:server',
       'connect:livereload',
@@ -554,8 +547,9 @@ module.exports = function (grunt) {
     //change dist folder to development
 
     appConfig.dist = appConfig.development;
-     grunt.log.write('APPLICATION PATH: ' + appConfig.dist);
-    grunt.task.run(['debugDev']);
+
+     grunt.log.write('APPLICATION PATH should be development: ' + appConfig.dist);
+    grunt.task.run(['development']);
   });
 
   grunt.registerTask('test', [
@@ -571,24 +565,22 @@ module.exports = function (grunt) {
     'watch'
   ]);
   //build development
-   grunt.registerTask('debugDev', [
+   grunt.registerTask('development', [
     'jshint:all',
-    'clean:dist',
-    'clean:server',
+    'clean',
     'wiredep',
+    'includeSource:server',
     'useminPrepare',
-    'concurrent:dist',
+    'concurrent:server',
     'autoprefixer:server',
-    'ngtemplates',
-    'concat',
+   /* 'concat',
     'ngAnnotate',
     'copy:dist',
     'cssmin',
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin',
-    'concurrent:server',
+    'htmlmin',*/
     'connect:livereload',
     'karma:continuous',
     'watch'
@@ -598,13 +590,13 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
+    'includeSource:dist',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
     'ngtemplates',
     'concat',
     'ngAnnotate',
-    'copy:development',
     'copy:dist',
     'cdnify',
     'cssmin',
@@ -616,7 +608,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'newer:jshint',
-    'test',
-    'build'
+    'development'
   ]);
 };

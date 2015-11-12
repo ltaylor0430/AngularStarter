@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width">
   <title>Our awesome Application</title>
     <!-- build:css(.) styles/vendor.css -->
-    <link rel="stylesheet" href=".generated/styles/custom-bootstrap.css">
+    <link rel="stylesheet" href="styles/custom-bootstrap.css">
     <!-- bower:css -->
     <!-- endbower -->
     <!-- endbuild -->
@@ -15,7 +15,7 @@
 
     <!-- endbuild -->
 </head>
-<body>
+<body ng-app="ngTest">
   <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -59,33 +59,57 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    <div class="container">
+    <div class="container" ng-controller="angularTestCtrl">
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>Navbar example</h1>
-        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-        <p>To see the difference between static and fixed top navbars, just scroll.</p>
-        <p>
-          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs »</a>
-        </p>
+        <h1>Angular Starter</h1>
+        <p>This example is a quick exercise to illustrate the basics with AngularJS and Underscore.</p>
       </div>
 
+      <div class="row">
+        <div class="col-sm-12">
+          <h1>ngShow/ngHide</h1>
+          <p class="lead">Show/Hide elements based on angular expression</p>
+          <p><button ng-click="updateShowHide()">Toggle Text</button></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 ng-hide" ng-show="toggleShowHide">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi totam obcaecati quaerat rem aliquid, incidunt cumque, provident neque dolore nostrum temporibus ullam rerum harum aperiam tenetur nisi unde accusantium et?
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 databinding"><h1>Databinding</h1>
+        <form>
+        <label for="txt1">Enter a number between 1-100 :</label>
+        <input name="txt1" type="text" class="form-control" ng-change="txt1Change()" ng-pattern="/^[0-9]+$/" ng-model="txt1">
+        </form>
+        <span>{{txt1}}</span>
+        <h2>Range:</h2><span class="output">{{txtRange}}</span>
+        <h2>Filter(odd numbers)</h2>
+        <span>{{oddOnly}}</span>
+         <h2>Map(add 2 to odd numbers)</h2>
+        <span>{{mapped}}</span>
+        <h2>Reduce</h2>
+        <span>{{reduced}}</span>
+        </div>
+      </div>
     </div>
    <!-- Add Javascript dependencies here -->
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="../bower_components/jquery/dist/jquery.js"></script>
-    <script src="../bower_components/underscore/underscore.js"></script>
-    <script src="../bower_components/angular/angular.js"></script>
-    <script src="../bower_components/angular-touch/angular-touch.js"></script>
-    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-
-        <!-- build:js({.generated,app}) scripts/scripts.js -->
-       <script src="scripts/app.js"></script>
+        <!-- build:js({.generated,builds/development,app}) scripts/scripts.js -->
+        <!-- include: "type": "js", "files": ["./shared_components/**/*.js", "./app.js","./components/**/*.js", "!./**/*_test.js", "!./*_test.js"] -->
          <!-- endbuild -->
 </body>
 </html>

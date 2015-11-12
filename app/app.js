@@ -1,1 +1,1 @@
-var app = angular.module('ngTest',['']);
+var app = angular.module('ngTest',['ngSanitize','ui.router','underscore']);
