@@ -26,5 +26,9 @@ angular.module('ngTest')
           $scope.reduced  = model.sum($scope.mapped);
         }
     };
-
+    //call init function on controller load
+    $scope.init = function() {
+     $scope.txt1Change();
+    };
+    $scope.init();
 }]);
