@@ -60,41 +60,8 @@
       </div>
     </nav>
     <div class="container" ng-controller="angularTestCtrl">
+      <div ui-view/>
 
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h1>Angular Starter</h1>
-        <p>This example is a quick exercise to illustrate the basics with AngularJS and Underscore.</p>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-12">
-          <h1>ngShow/ngHide</h1>
-          <p class="lead">Show/Hide elements based on angular expression</p>
-          <p><button ng-click="updateShowHide()">Toggle Text</button></p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12 ng-hide" ng-show="toggleShowHide">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi totam obcaecati quaerat rem aliquid, incidunt cumque, provident neque dolore nostrum temporibus ullam rerum harum aperiam tenetur nisi unde accusantium et?
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6 databinding"><h1>Databinding</h1>
-        <form>
-        <label for="txt1">Enter a number between 1-100 :</label>
-        <input name="txt1" type="text" class="form-control" ng-change="txt1Change()" ng-pattern="/^[0-9]+$/" ng-model="txt1">
-        </form>
-        <span>{{txt1}}</span>
-        <h2>Range:</h2><span class="output">{{txtRange}}</span>
-        <h2>Filter(odd numbers)</h2>
-        <span>{{oddOnly}}</span>
-         <h2>Map(add 2 to odd numbers)</h2>
-        <span>{{mapped}}</span>
-        <h2>Reduce</h2>
-        <span>{{reduced}}</span>
-        </div>
-      </div>
     </div>
    <!-- Add Javascript dependencies here -->
     <!-- build:js(.) scripts/vendor.js -->
@@ -109,7 +76,7 @@
     <!-- endbower -->
     <!-- endbuild -->
         <!-- build:js({.generated,builds/development,app}) scripts/scripts.js -->
-        <!-- include: "type": "js", "files": ["./shared_components/**/*.js", "./app.js","./components/**/*.js", "!./**/*_test.js", "!./*_test.js"] -->
+        <!-- include: "type": "js", "files": ["shared_components/**/*.js", "app.js","./components/**/*.js", "!**/*_test.js", "!*_test.js"] -->
          <!-- endbuild -->
 </body>
 </html>

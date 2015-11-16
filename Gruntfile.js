@@ -43,6 +43,7 @@ module.exports = function (grunt) {
       options: {
         basePath: 'app',
         baseUrl: '/',
+
       },
       server: {
         files: {
@@ -65,15 +66,19 @@ module.exports = function (grunt) {
        files: ['<%= yeoman.app %>/index.html'],
        tasks: ['includeSource:server']
      },
+      html: {
+         files: ['<%= yeoman.app %>/**/*.html'],
+        tasks: ['newer:copy:dist'],
+      },
       js: {
-        files: ['<%= yeoman.app %>/**/*.js','!<%= yeoman.app %>/components/**/*_test.js'],
+        files: ['<%= yeoman.app %>/**/*.js','!<%= yeoman.app %>/components/{,*/}*_test.js'],
         tasks: ['newer:jshint:all','newer:copy:html','usemin:js'],
         options: {
           livereload: '<%= connect.options.livereload %>'
         }
       },
       jsTest: {
-        files: ['<%= yeoman.app %>/**/*_test.js'],
+        files: ['<%= yeoman.app %>/{,*/}*_test.js'],
         tasks: ['newer:jshint:test', 'karma:continuous:run'],
         options: {
           livereload: '<%= connect.options.livereload %>'
@@ -116,15 +121,17 @@ module.exports = function (grunt) {
               serveStatic('.generated',{
                 dotFiles: 'allowed'}),
               serveStatic('test'),
-              connect().use(
-                '/bower_components',
+              connect().use('/bower_components',
                serveStatic('./bower_components')
               ),
-              connect().use(
-                '/app/styles',
+
+              connect().use('/app/styles',
               serveStatic('.generated/styles')
               ),
-             serveStatic(appConfig.app)
+
+             serveStatic(appConfig.app),
+             serveStatic(appConfig.development)
+
             ];
           }
         }
@@ -460,12 +467,32 @@ module.exports = function (grunt) {
           dot: true,
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
+          flatten: true,
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html'
           ]
-        }, {
+        },
+        {
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>/components',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            '**/*.html'
+          ]
+        },
+         {
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>/shared_components',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            '**/*.html'
+          ]
+        },
+         {
           expand: true,
           cwd: '.generated/images',
           dest: '<%= yeoman.dist %>/images',
@@ -573,10 +600,10 @@ module.exports = function (grunt) {
     'useminPrepare',
     'concurrent:server',
     'autoprefixer:server',
-   /* 'concat',
+   /* 'concat', */
     'ngAnnotate',
     'copy:dist',
-    'cssmin',
+  /*  'cssmin',
     'uglify',
     'filerev',
     'usemin',
