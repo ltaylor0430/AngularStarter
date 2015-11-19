@@ -18,7 +18,7 @@ angular.module('ngTest')
     if (_.isUndefined(rangeCopy)) {
          return;
      }
-     console.log(rangeCopy);
+
     return _(rangeCopy).map(function(x) {
             return x + num;
           });

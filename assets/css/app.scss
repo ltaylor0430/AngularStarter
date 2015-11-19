@@ -1,1 +1,8 @@
 @import 'Import';
+.navbar-default {
+background: linear-gradient(to right, hsla(210,44%,52%,1) 0%,hsla(169,60%,60%,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+ color:white;
+ border-color:#5195BB;
+}
+
+.test {display:flex}

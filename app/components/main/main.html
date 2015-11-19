@@ -8,7 +8,7 @@
         <div class="col-sm-12">
           <h1>ngShow/ngHide</h1>
           <p class="lead">Show/Hide elements based on angular expression</p>
-          <p><button ng-click="updateShowHide()">Toggle Text</button></p>
+          <p><button class="btn btn-primary btn-outline btn-lg" ng-click="updateShowHide()">Toggle Text</button></p>
         </div>
       </div>
       <div class="row">
@@ -17,12 +17,17 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-6 databinding"><h1>Databinding</h1>
-        <form>
-        <label for="txt1">Enter a number between 1-100 :</label>
-        <input name="txt1" type="text" class="form-control" ng-change="txt1Change()" ng-pattern="/^[0-9]+$/" ng-model="txt1">
-        </form>
+        <div class="col-sm-6 databinding">
+          <h1>Databinding</h1>
+          <form>
+          <label for="txt1">Enter a number between 1-100 :</label>
+          <input name="txt1" type="text" class="form-control" ng-change="txt1Change()" ng-pattern="/^[0-9]+$/" ng-model="txt1">
+          </form>
+
         <span>{{txt1}}</span>
+        </div>
+        <div class="col-sm-6 databinding">
+        <h1>UnderscoreJs</h1>
         <h2>Range:</h2><span class="output">{{txtRange}}</span>
         <h2>Filter(odd numbers)</h2>
         <span>{{oddOnly}}</span>

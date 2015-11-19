@@ -17,7 +17,8 @@ module.exports = function (grunt) {
   require('jit-grunt')(grunt, {
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
-    cdnify: 'grunt-google-cdn'
+    cdnify: 'grunt-google-cdn',
+    postcss: 'grunt-postcss'
   });
 
  if (grunt.option('dev') !== undefined)
@@ -86,7 +87,7 @@ module.exports = function (grunt) {
       },
       compass: {
         files: ['assets/css/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer:server']
+        tasks: ['compass:server', 'postcss:server']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -194,17 +195,7 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.generated',
-      development: {
-          files: [{
-          dot: true,
-          src: [
-            '.generated',
-            '<%= yeoman.development %>/{,*/}*',
-            '!<%= yeoman.development %>/.git{,*/}*'
-          ]
-        }]
-      }
+      server: '.generated'
     },
       //concatenate all js and css files in buildelopment build
     concat: {
@@ -214,16 +205,15 @@ module.exports = function (grunt) {
           dest: '.generated/concat/scripts/app.js'
         }
     },
-
-    // Add vendor prefixed styles
-    autoprefixer: {
-      options: {
-        browsers: ['last 1 version']
+  //Add vendor prefixed styles
+  postcss: {
+     options: {
+        map: true,
+        processors: [
+        require('autoprefixer')({browsers: ['last 2 version']})
+        ]
       },
       server: {
-        options: {
-          map: true,
-        },
         files: [{
           expand: true,
           cwd: '.generated/styles/',
@@ -239,7 +229,8 @@ module.exports = function (grunt) {
           dest: '.generated/styles/'
         }]
       }
-    },
+  },
+
 
     // Automatically inject Bower components into the app
     wiredep: {
@@ -560,7 +551,7 @@ module.exports = function (grunt) {
       'wiredep',
       'includeSource:dist',
       'concurrent:server',
-      'autoprefixer:server',
+      'postcss:server',
       'connect:livereload',
       'watch'
     ]);
@@ -586,7 +577,7 @@ module.exports = function (grunt) {
     'copy:development',*/
 /*    'concat',*/
     'concurrent:test',
-    'autoprefixer',
+    'postcss:server',
     'connect:test',
     'karma:continuous',
     'watch'
@@ -599,15 +590,9 @@ module.exports = function (grunt) {
     'includeSource:server',
     'useminPrepare',
     'concurrent:server',
-    'autoprefixer:server',
-   /* 'concat', */
+    'postcss:server',
     'ngAnnotate',
     'copy:dist',
-  /*  'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    'htmlmin',*/
     'connect:livereload',
     'karma:continuous',
     'watch'
@@ -620,7 +605,7 @@ module.exports = function (grunt) {
     'includeSource:dist',
     'useminPrepare',
     'concurrent:dist',
-    'autoprefixer',
+    'postcss:dist',
     'ngtemplates',
     'concat',
     'ngAnnotate',

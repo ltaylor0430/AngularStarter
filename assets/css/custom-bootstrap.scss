@@ -2,11 +2,13 @@
 
 //bootstrap custom settings
 //bootstrap
-$body-bg: $carolinablue;
+$body-bg: #FFF;
 $brand-primary: $grayblue;
 $navbar-default-bg: $darkBlue;
 $navbar-default-color:$textOne;
-
+$nav-link-hover-bg:#fff;
+$navbar-default-link-color:#1B4088;
+$navbar-default-link-active-bg:#00BCD4;
 //bootstrap fonts path
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // bower:scss

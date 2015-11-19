@@ -2,15 +2,13 @@ angular.module('ngTest')
   .controller('angularTestCtrl',['$scope','_','MainModel', function angularTestCtrl($scope, _ , MainModel){
     'use strict';
     $scope.toggleShowHide = false;
-    $scope.txt1 ='100';
-    $scope.txtRange = [10];
+    $scope.txt1 ='5';
+    $scope.txtRange = [];
     $scope.mapped =0;
     $scope.reduced =0;
     var model = new MainModel();
     $scope.oddOnly = [];
-    //model.oddFilter(parseInt($scope.txt1));
-    console.log('are we up');
-    console.log(_);
+
     $scope.updateShowHide = function() {
         $scope.toggleShowHide = !$scope.toggleShowHide;
     };
@@ -22,7 +20,7 @@ angular.module('ngTest')
           if (parseInt($scope.txt1) >100) {
             return;
           }
-          console.log($scope.txt1);
+
           $scope.txtRange = _.range($scope.txt1);
           $scope.oddOnly  = model.oddFilter($scope.txtRange);
           $scope.mapped   = model.addToList(2,$scope.oddOnly);
@@ -30,8 +28,8 @@ angular.module('ngTest')
         }
     };
     //call init function on controller load
-    /*$scope.init = function() {
+    $scope.init = function() {
      $scope.txt1Change();
     };
-    */
+    $scope.init();
 }]);
